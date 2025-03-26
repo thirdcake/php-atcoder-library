@@ -30,7 +30,7 @@ function manacherEven(string $str):array {
     $str2 .= $div;
     $arr = manacher($str2);
     $r = [];
-    for($i=1; $i<strlen($str); $i++) {
+    for($i=0; $i<=strlen($str); $i++) {
         $r[] = intdiv($arr[$i*2]-1, 2);
     }
     return $r;
@@ -42,7 +42,7 @@ echo implode(' ', str_split($str)).PHP_EOL;
 echo implode(' ', manacher($str)).PHP_EOL;
 
 // 偶数の回文abbaが欲しい場合は、manacherEvenを使う
-echo implode(' ', str_split($str)).PHP_EOL;
-echo ' '.implode(' ', manacherEven($str)).PHP_EOL;
+echo ' '.implode(' ', str_split($str)).PHP_EOL;
+echo implode(' ', manacherEven($str)).PHP_EOL;
 
 
