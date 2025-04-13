@@ -21,8 +21,13 @@ class UnionFind {
         if ($px === $py) {
             return;
         }
-        $this->parents[$px] = $py;
-        $this->size[$py] = $px;
+        if($this->size[$px] < $this->size[$py]) {
+            $this->parents[$px] = $py;  // $pyが親になる
+            $this->size[$py] = $this->size[$px];
+        } else {
+            $this->parents[$py] = $px;
+            $this->size[$px] = $this->size[$py];
+        }
     }
     public function getsize(int $x): int {
         $px = $this->find($x);
