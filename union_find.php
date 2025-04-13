@@ -1,26 +1,33 @@
 <?php
-
+// union find
 class UnionFind {
-  public $parents;
-  public function __construct ($n) {
-    $this->parents = range(0, $n - 1);
-  }
-  public function find ($x) {
-    if ($this->parents[$x] === $x) {
-      return $x;
-    } else {
-      $this->parents[$x] = $this->find($this->parents[$x]);
-      return $this->parents[$x];
+    public array $parents;
+    public array $size;
+    public function __construct (int $n) {
+        $this->parents = range(0, $n - 1);
+        $this->size = array_fill(0, $n, 1);
     }
-  }
-  public function union ($x, $y) {
-    $px = $this->find($x);
-    $py = $this->find($y);
-    if ($px === $py) {
-      return;
+    public function find (int $x): int {
+        if ($this->parents[$x] === $x) {
+            return $x;
+        } else {
+            $this->parents[$x] = $this->find($this->parents[$x]);
+            return $this->parents[$x];
+        }
     }
-    $this->parents[$px] = $py;
-  }
+    public function union (int $x, int $y):void {
+        $px = $this->find($x);
+        $py = $this->find($y);
+        if ($px === $py) {
+            return;
+        }
+        $this->parents[$px] = $py;
+        $this->size[$py] = $px;
+    }
+    public function getsize(int $x): int {
+        $px = $this->find($x);
+        return $this->size[$px];
+    }
 }
 
 // 使い方
