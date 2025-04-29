@@ -1,5 +1,5 @@
 <?php
-// Fenwick Tree
+// ## Fenwick Tree
 class Fenwick {
     public array $tree;
     public int $size;

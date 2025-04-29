@@ -1,8 +1,6 @@
 <?php
-
-// manacher 
+// ## manacher 
 // https://snuke.hatenablog.com/entry/2014/12/02/235837
-
 function manacher (string $str):array {
     $r = [];
     $len = strlen($str);

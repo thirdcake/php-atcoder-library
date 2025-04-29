@@ -1,6 +1,5 @@
 <?php
-
-// dijkstra
+// ## dijkstra
 function dijkstra(array $graph, int $start) {
 	$dist = array_fill(0, count($graph), PHP_INT_MAX);
 	$dist[$start] = 0;

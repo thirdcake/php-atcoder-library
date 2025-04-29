@@ -1,5 +1,5 @@
 <?php
-
+// ## next permutation
 function next_permutation(array $arr, int $n): Generator {
     while (true) {
         yield $arr;

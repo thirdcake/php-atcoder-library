@@ -1,5 +1,5 @@
 <?php
-// union find
+// ## union find
 class UnionFind {
     public array $parents;
     public array $size;
