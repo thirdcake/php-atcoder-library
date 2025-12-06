@@ -1,5 +1,5 @@
 <?php
-// ## AVL Tree, upper_bound, lower_bound
+// ## AVL Tree
 class AVL {
     public array $nodes;
     public string|null $root;
@@ -10,8 +10,8 @@ class AVL {
     private function create_node(int $num, string|null $parent=null):void {
         $this->nodes['n'.$num] = [
             $parent,  // 0 => parent index {string|null}
-            null,     // 1 => lower child index {string}
-            null,     // 2 => upper child index {string}
+            null,     // 1 => left child index {string}
+            null,     // 2 => right child index {string}
             $num,     // 3 => num {int}
             1,        // 4 => height {int}
         ];
@@ -63,36 +63,36 @@ class AVL {
     private function rebalance(string|null $index):void {
         if($index===null) return;
         $node = $this->nodes[$index];
-        $lower_height = $this->get_height($node[1]);
-        $upper_height = $this->get_height($node[2]);
-        if($lower_height + 1 < $upper_height) {
-            $upper_index = $node[2];
-            $upper_node = $this->nodes[$upper_index];
-            $upper_lower_height = $this->get_height($upper_node[1]);
-            $upper_upper_height = $this->get_height($upper_node[2]);
-            if($upper_upper_height < $upper_lower_height) {
-                $upper_lower_index = $upper_node[1];
-                $this->rotate_right($upper_index);
-                $this->set_height($upper_index);
-                $this->set_height($upper_lower_index);
+        $left_height = $this->get_height($node[1]);
+        $right_height = $this->get_height($node[2]);
+        if($left_height + 1 < $right_height) {
+            $right_index = $node[2];
+            $right_node = $this->nodes[$right_index];
+            $right_left_height = $this->get_height($right_node[1]);
+            $right_right_height = $this->get_height($right_node[2]);
+            if($right_right_height < $right_left_height) {
+                $right_left_index = $right_node[1];
+                $this->rotate_right($right_index);
+                $this->set_height($right_index);
+                $this->set_height($right_left_index);
             }
             $this->rotate_left($index);
             $this->set_height($index);
-            $this->set_height($upper_index);
-        }elseif($upper_height + 1 < $lower_height) {
-            $lower_index = $node[1];
-            $lower_node = $this->nodes[$lower_index];
-            $lower_lower_height = $this->get_height($lower_node[1]);
-            $lower_upper_height = $this->get_height($lower_node[2]);
-            if($lower_lower_height < $lower_upper_height) {
-                $lower_upper_index = $lower_node[2];
-                $this->rotate_left($lower_index);
-                $this->set_height($lower_index);
-                $this->set_height($lower_upper_index);
+            $this->set_height($right_index);
+        }elseif($right_height + 1 < $left_height) {
+            $left_index = $node[1];
+            $left_node = $this->nodes[$left_index];
+            $left_left_height = $this->get_height($left_node[1]);
+            $left_right_height = $this->get_height($left_node[2]);
+            if($left_left_height < $left_right_height) {
+                $left_right_index = $left_node[2];
+                $this->rotate_left($left_index);
+                $this->set_height($left_index);
+                $this->set_height($left_right_index);
             }
             $this->rotate_right($index);
             $this->set_height($index);
-            $this->set_height($lower_index);
+            $this->set_height($left_index);
         }else{
             $this->set_height($index);
         }
@@ -101,26 +101,26 @@ class AVL {
     private function rotate_right(string $index):void {
         $node = $this->nodes[$index];
         $parent_index = $node[0];
-        $lower_index = $node[1];
-        $lower_node = $this->nodes[$lower_index];
-        $lower_upper_index = $lower_node[2];
-        if($lower_upper_index!==null) {
-            $this->nodes[$lower_upper_index][0] = $index;
+        $left_index = $node[1];
+        $left_node = $this->nodes[$left_index];
+        $left_right_index = $left_node[2];
+        if($left_right_index!==null) {
+            $this->nodes[$left_right_index][0] = $index;
         }
         if($parent_index===null) {
-            $this->root = $lower_index;
+            $this->root = $left_index;
         }else{
             $parent_node = $this->nodes[$parent_index];
             if($node[3] < $parent_node[3]) {
-                $this->nodes[$parent_index][1] = $lower_index;
+                $this->nodes[$parent_index][1] = $left_index;
             }else{
-                $this->nodes[$parent_index][2] = $lower_index;
+                $this->nodes[$parent_index][2] = $left_index;
             }
         }
-        $this->nodes[$index][0] = $lower_index;
-        $this->nodes[$index][1] = $lower_upper_index;
-        $this->nodes[$lower_index][0] = $parent_index;
-        $this->nodes[$lower_index][2] = $index;
+        $this->nodes[$index][0] = $left_index;
+        $this->nodes[$index][1] = $left_upper_index;
+        $this->nodes[$left_index][0] = $parent_index;
+        $this->nodes[$left_index][2] = $index;
     }
     private function rotate_left(string $index):void {
         $node = $this->nodes[$index];
@@ -193,7 +193,7 @@ class AVL {
             $parent_index = $node[0];
             $lower_index = $node[1];
             $upper_index = $node[2];
-            $ub_index = 'n'.$this->upper_bound($node[3]);
+            $ub_index = 'n'.$this->next_greater($node[3]);
             $ub_node = $this->nodes[$ub_index];
             $ub_parent_index = $ub_node[0];
             $ub_upper_index = $ub_node[2];
@@ -234,7 +234,7 @@ class AVL {
         unset($this->nodes[$index]);
         $this->rebalance($rebalance_index);
     }
-    public function upper_bound(int $num):int|null {
+    public function next_greater(int $num):int|null {
         if($this->root===null) return null;
         $min = PHP_INT_MAX;
         $index = $this->root;
@@ -249,7 +249,7 @@ class AVL {
         }
         return ($min===PHP_INT_MAX) ? null : $min;
     }
-    public function lower_bound(int $num):int|null {
+    public function prev_less(int $num):int|null {
         if($this->root===null) return null;
         $max = PHP_INT_MIN;
         $index = $this->root;
@@ -276,10 +276,10 @@ $avl->insert(11);
 $avl->insert(5);
 var_dump($avl->contain(3));
 var_dump($avl->contain(5));
-var_dump($avl->upper_bound(9));
-var_dump($avl->upper_bound(10));
-var_dump($avl->upper_bound(11));
+var_dump($avl->next_greater(9));
+var_dump($avl->next_greater(10));
+var_dump($avl->next_greater(11));
 $avl->erase(5);
-var_dump($avl->lower_bound(6));
-var_dump($avl->lower_bound(-5));
+var_dump($avl->prev_less(6));
+var_dump($avl->prev_less(-5));
 
