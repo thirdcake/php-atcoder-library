@@ -8,7 +8,8 @@ class AVL {
         $this->root = null;
     }
     private function create_node(int $num, string|null $parent=null):void {
-        $this->nodes['n'.$num] = [
+        $index = 'n'.$num;
+        $this->nodes[$index] = [
             $parent,  // 0 => parent index {string|null}
             null,     // 1 => left child index {string}
             null,     // 2 => right child index {string}
@@ -16,13 +17,13 @@ class AVL {
             1,        // 4 => height {int}
         ];
         if($parent===null) {
-            $this->root = 'n'.$num;
+            $this->root = $index;
         }else{
             $parent_node = $this->nodes[$parent];
             if($num < $parent_node[3]) {
-                $this->nodes[$parent][1] = 'n'.$num;
+                $this->nodes[$parent][1] = $index;
             }else{
-                $this->nodes[$parent][2] = 'n'.$num;
+                $this->nodes[$parent][2] = $index;
             }
         }
     }
@@ -52,12 +53,12 @@ class AVL {
     private function get_height(string|null $index):int {
         return ($index===null) ? 0 : $this->nodes[$index][4];
     }
-    private function set_height(string|null $index):void {
+    private function set_height(string $index):void {
         $node = $this->nodes[$index];
-        $height = max(
+        $height = 1 + max(
             $this->get_height($node[1]),
             $this->get_height($node[2])
-        )+1;
+        );
         $this->nodes[$index][4] = $height;
     }
     private function rebalance(string|null $index):void {
@@ -118,123 +119,128 @@ class AVL {
             }
         }
         $this->nodes[$index][0] = $left_index;
-        $this->nodes[$index][1] = $left_upper_index;
+        $this->nodes[$index][1] = $left_right_index;
         $this->nodes[$left_index][0] = $parent_index;
         $this->nodes[$left_index][2] = $index;
     }
     private function rotate_left(string $index):void {
         $node = $this->nodes[$index];
         $parent_index = $node[0];
-        $upper_index = $node[2];
-        $upper_node = $this->nodes[$upper_index];
-        $upper_lower_index = $upper_node[1];
-        if($upper_lower_index!==null) {
-            $this->nodes[$upper_lower_index][0] = $index;
+        $right_index = $node[2];
+        $right_node = $this->nodes[$right_index];
+        $right_left_index = $right_node[1];
+        if($right_left_index!==null) {
+            $this->nodes[$right_left_index][0] = $index;
         }
         if($parent_index===null) {
-            $this->root = $upper_index;
+            $this->root = $right_index;
         }else{
             $parent_node = $this->nodes[$parent_index];
             if($node[3] < $parent_node[3]) {
-                $this->nodes[$parent_index][1] = $upper_index;
+                $this->nodes[$parent_index][1] = $right_index;
             }else{
-                $this->nodes[$parent_index][2] = $upper_index;
+                $this->nodes[$parent_index][2] = $right_index;
             }
         }
-        $this->nodes[$index][0] = $upper_index;
-        $this->nodes[$index][2] = $upper_lower_index;
-        $this->nodes[$upper_index][0] = $parent_index;
-        $this->nodes[$upper_index][1] = $index;
+        $this->nodes[$index][0] = $right_index;
+        $this->nodes[$index][2] = $right_left_index;
+        $this->nodes[$right_index][0] = $parent_index;
+        $this->nodes[$right_index][1] = $index;
     }
     public function erase(int $num):void {
-        if(!isset($this->nodes['n'.$num])) return;
         $index = 'n'.$num;
+        if(!isset($this->nodes[$index])) return;
         $node = $this->nodes[$index];
         if($node[1]===null && $node[2]===null) {
             $parent_index = $node[0];
             $rebalance_index = $parent_index;
+            $replace_index = null;
             if($parent_index===null) {
-                $this->root = null;
+                $this->root = $replace_index;
             }else{
                 $parent_node = $this->nodes[$parent_index];
                 if($parent_node[1]===$index) {
-                    $this->nodes[$parent_index][1] = null;
+                    $this->nodes[$parent_index][1] = $replace_index;
                 }else{
-                    $this->nodes[$parent_index][2] = null;
+                    $this->nodes[$parent_index][2] = $replace_index;
                 }
             }
         }elseif($node[1]===null) {
             $parent_index = $node[0];
             $rebalance_index = $parent_index;
+            $replace_index = $node[2];
             if($parent_index===null) {
-                $this->root = $node[2];
+                $this->root = $replace_index;
             }else{
                 $parent_node = $this->nodes[$parent_index];
                 if($parent_node[1]===$index) {
-                    $this->nodes[$parent_index][1] = $node[2];
+                    $this->nodes[$parent_index][1] = $replace_index;
                 }else{
-                    $this->nodes[$parent_index][2] = $node[2];
+                    $this->nodes[$parent_index][2] = $replace_index;
                 }
             }
+            $this->nodes[$replace_index][0] = $parent_index;
         }elseif($node[2]===null) {
             $parent_index = $node[0];
             $rebalance_index = $parent_index;
+            $replace_index = $node[1];
             if($parent_index===null) {
-                $this->root = $node[1];
+                $this->root = $replace_index;
             }else{
                 $parent_node = $this->nodes[$parent_index];
                 if($parent_node[1]===$index) {
-                    $this->nodes[$parent_index][1] = $node[1];
+                    $this->nodes[$parent_index][1] = $replace_index;
                 }else{
-                    $this->nodes[$parent_index][2] = $node[1];
+                    $this->nodes[$parent_index][2] = $replace_index;
                 }
             }
+            $this->nodes[$replace_index][0] = $parent_index;
         }else{
             $parent_index = $node[0];
-            $lower_index = $node[1];
-            $upper_index = $node[2];
-            $ub_index = 'n'.$this->next_greater($node[3]);
-            $ub_node = $this->nodes[$ub_index];
-            $ub_parent_index = $ub_node[0];
-            $ub_upper_index = $ub_node[2];
-            $rebalance_index = ($ub_parent_index===$index)
-                ? $ub_index
-                : $ub_parent_index;
+            $left_index = $node[1];
+            $right_index = $node[2];
+            $ma_index = 'n'.$this->min_above($node[3]);
+            // $node に子要素があるので、min_above は null にならない
+            $ma_node = $this->nodes[$ma_index];
+            $ma_parent_index = $ma_node[0];
+            $ma_right_index = $ma_node[2];
+            $rebalance_index = ($ma_parent_index===$index)
+                ? $ma_index
+                : $ma_parent_index;
+            $replace_index = $ma_index;
             if($parent_index===null) {
-                $this->root = $ub_index;
+                $this->root = $replace_index;
             }else{
                 $parent_node = $this->nodes[$parent_index];
                 if($parent_node[1]===$index) {
-                    $this->nodes[$parent_index][1] = $ub_index;
+                    $this->nodes[$parent_index][1] = $replace_index;
                 }else{
-                    $this->nodes[$parent_index][2] = $ub_index;
+                    $this->nodes[$parent_index][2] = $replace_index;
                 }
             }
-            $this->nodes[$ub_index][0] = $parent_index;
-            $this->nodes[$ub_index][1] = $lower_index;
-            if($upper_index!==$ub_index) {
-                $this->nodes[$ub_index][2] = $upper_index;
+            $this->nodes[$replace_index][0] = $parent_index;
+            $this->nodes[$replace_index][1] = $left_index;
+            $this->nodes[$left_index][0] = $replace_index;
+            if($right_index!==$ma_index) {
+                $this->nodes[$replace_index][2] = $right_index;
+                $this->nodes[$right_index][0] = $replace_index;
             }
-            $this->nodes[$lower_index][0] = $ub_index;
-            if($upper_index!==$ub_index) {
-                $this->nodes[$upper_index][0] = $ub_index;
-            }
-            if($ub_parent_index!==$index) {
-                $ub_parent_node = $this->nodes[$ub_parent_index];
-                if($ub_parent_node[1]===$ub_index) {
-                    $this->nodes[$ub_parent_index][1] = $ub_upper_index;
+            if($ma_parent_index!==$index) {
+                $ma_parent_node = $this->nodes[$ma_parent_index];
+                if($ma_parent_node[1]===$ma_index) {
+                    $this->nodes[$ma_parent_index][1] = $ma_right_index;
                 }else{
-                    $this->nodes[$ub_parent_index][2] = $ub_upper_index;
+                    $this->nodes[$ma_parent_index][2] = $ma_right_index;
                 }
             }
-            if($ub_upper_index!==null) {
-                $this->nodes[$ub_upper_index][0] = $ub_parent_index;
+            if($ma_right_index!==null) {
+                $this->nodes[$ma_right_index][0] = $ma_parent_index;
             }
         }
         unset($this->nodes[$index]);
         $this->rebalance($rebalance_index);
     }
-    public function next_greater(int $num):int|null {
+    public function min_above(int $num):int|null {
         if($this->root===null) return null;
         $min = PHP_INT_MAX;
         $index = $this->root;
@@ -249,7 +255,7 @@ class AVL {
         }
         return ($min===PHP_INT_MAX) ? null : $min;
     }
-    public function prev_less(int $num):int|null {
+    public function max_below(int $num):int|null {
         if($this->root===null) return null;
         $max = PHP_INT_MIN;
         $index = $this->root;
@@ -276,10 +282,10 @@ $avl->insert(11);
 $avl->insert(5);
 var_dump($avl->contain(3));
 var_dump($avl->contain(5));
-var_dump($avl->next_greater(9));
-var_dump($avl->next_greater(10));
-var_dump($avl->next_greater(11));
+var_dump($avl->min_above(9));
+var_dump($avl->min_above(10));
+var_dump($avl->min_above(11));
 $avl->erase(5);
-var_dump($avl->prev_less(6));
-var_dump($avl->prev_less(-5));
+var_dump($avl->max_below(6));
+var_dump($avl->max_below(-5));
 
