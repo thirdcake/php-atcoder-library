@@ -31,13 +31,18 @@ function next_permutation(array $arr, int $n): Generator {
 }
 
 // 使い方
-$arr = range(1,10);
+$arr = range(1,8);
 $n = count($arr);
 $ans = 0;
 foreach (next_permutation($arr, $n) as $perm) {
     $ans += 1;
 }
+echo (($ans === (int) gmp_fact(8))?'true':'false') . PHP_EOL;
 
-echo ($ans === (int) gmp_fact(10))?'true':'false' . PHP_EOL;
+// 次の値がほしいだけなら、
+$gen = next_permutation($arr, $n);
+$gen->next();
+$ans = $gen->current();
+echo implode(' ', $ans).PHP_EOL;
 
 
