@@ -15,6 +15,21 @@ function lower_bound(array $arr, int $val):int {
     return $ok;
 }
 
+// ## upper_bound(ソート済みのときのみ利用可)
+function upper_bound(array $arr, int $val):int {
+    $ng = -1;
+    $ok = count($arr);
+    while($ok-$ng>1) {
+        $mid = intdiv($ng + $ok, 2);
+        if($arr[$mid] > $val) {
+            $ok = $mid;
+        }else{
+            $ng = $mid;
+        }
+    }
+    return $ok;
+}
+
 // 実行例(LIS/最長増加部分列)
 $arr = [2, 3, 1, 6, 4, 5];
 $ans = [];
