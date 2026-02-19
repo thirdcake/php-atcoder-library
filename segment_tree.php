@@ -3,9 +3,9 @@
 class SegmentTree {
     public array $tree;
     public int $n;
-    public $func;  // callable はプロパティに入れられない
+    public Closure $func;
     public mixed $e;
-    public function __construct (array $arr, callable $func, mixed $e) {
+    public function __construct (array $arr, Closure $func, mixed $e) {
         $this->func = $func;
         $this->e = $e;
         $size = count($arr);
