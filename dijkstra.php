@@ -1,7 +1,7 @@
 <?php
 // ## dijkstra
-function dijkstra(array $graph, int $start) {
-	$dist = array_fill(0, count($graph), PHP_INT_MAX);
+function dijkstra(array $graph, int $n, int $start) {
+	$dist = array_fill(0, $n, PHP_INT_MAX);
 	$dist[$start] = 0;
 	$que = new SplPriorityQueue();
 	$que->insert([0, $start], 0);
@@ -30,7 +30,7 @@ $g[0][2] = 6;
 $g[2][0] = 6;
 $g[1][2] = 2;
 $g[2][1] = 2;
-$dist = dijkstra($g, 0); // 0からの距離
+$dist = dijkstra($g, count($g), 0); // 0からの距離
 echo implode(' ', $dist).PHP_EOL;
 
 
