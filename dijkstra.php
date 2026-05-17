@@ -10,6 +10,7 @@ function dijkstra(array $graph, int $n, int $start) {
 		if($d > $dist[$v]) {
 			continue;
 		}
+        if(!isset($graph[$v])) continue;
 		foreach($graph[$v] as $u => $weight) {
 			$newd = $d + $weight;
 			if($dist[$u] > $newd) {
