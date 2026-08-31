@@ -31,7 +31,7 @@ class LazySegTree {
             $this->n <<= 1;
         }
 
-        $this->tree = array_fill(0, 2*$tihs->n, $this->e);
+        $this->tree = array_fill(0, 2*$this->n, $this->e);
         $this->lazy = array_fill(0, 2*$this->n, $this->id);
 
         for($i=0; $i<$size; $i++) {
@@ -58,7 +58,7 @@ class LazySegTree {
     }
 
     // [$a, $b) への更新であることに注意する
-    public function update(int $a, int $b mixed $x):void {
+    public function update(int $a, int $b, mixed $x):void {
         $this->update_recurse($a, $b, $x, 0, 0, $this->n);
     }
 
@@ -101,4 +101,15 @@ class LazySegTree {
 }
 
 // ## 使い方
+// 区間加算・区間最小値取得
+$array = [0, 1, 2, 0, 3, 5, 0];
+$func = fn($v1, $v2) => min($v1, $v2);
+$e = PHP_INT_MAX;
+$mapping = fn($f, $val) => $f + $val;
+$comp = fn($f, $g) => $f + $g;
+$id = 0;
+$lst = new LazySegTree($array, $func, $e, $mapping, $comp, $id);
+// [2, 5) に1追加
+$lst->update(2, 5, 1);
+var_dump($lst->query(1, 6));
 
