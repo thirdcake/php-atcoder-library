@@ -1,5 +1,14 @@
 <?php
 // ## warshall floyd
+/**
+ * Floyd-Warshall Algorithm
+ * 
+ * 任意の2点間の最短距離を求める
+ * ダイクストラ法より計算量が悪いO(N^3)が、負の辺でも使える
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function warshall_floyd(array $dist):array {
     $len = count($dist);
     for($mid=0; $mid<$len; $mid++) {  // 中間点

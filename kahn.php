@@ -1,5 +1,13 @@
 <?php
 // ## Kahn's algorithm -- Topological Sort
+/**
+ * Kahn's algorithm
+ * 
+ * 有向辺を持つ木の各頂点を向き順に並べる。 scc で使う
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function kahn(array $graph, int $n): array {
     // 昇順以外のソートが必要なら Priority Queue を使う
     // 順番を問わないなら SplQueue にすると log 分速い

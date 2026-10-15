@@ -1,6 +1,12 @@
 <?php
-// ## binary trie
-// 参考：https://kanpurin.hatenablog.com/entry/2021/09/05/163703
+/**
+ * binary trie
+ * 
+ * （作りかけ）
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class BinaryTrie {
     public array $nodel;
     public array $noder;

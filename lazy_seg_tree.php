@@ -1,5 +1,12 @@
 <?php
-// ## lazy segment tree
+/**
+ * lazy segment tree
+ * 
+ * セグメント木の一種。区間更新を遅延させる
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class LazySegTree {
     public array $tree;
     public array $lazy;

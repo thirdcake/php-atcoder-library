@@ -1,5 +1,12 @@
 <?php
-// ## next permutation
+/**
+ * next permutation
+ * 
+ * 順列の辞書順で次を求める
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function next_permutation(array $arr, int $n): Generator {
     while (true) {
         yield $arr;

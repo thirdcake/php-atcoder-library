@@ -1,6 +1,12 @@
 <?php
-// ## manacher 
-// https://snuke.hatenablog.com/entry/2014/12/02/235837
+/**
+ * Manacher's Algorithm
+ * 
+ * 回分判定
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function manacher (string $str):array {
     $r = [];
     $len = strlen($str);

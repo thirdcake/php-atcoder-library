@@ -1,5 +1,13 @@
 <?php
-// ## dijkstra
+/**
+ * dijkstra ダイクストラ法
+ * 
+ * スタート地点からの最短距離を求める
+ * 負の重みには使えない
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function dijkstra(array $graph, int $n, int $start) {
 	$dist = array_fill(0, $n, PHP_INT_MAX);
 	$dist[$start] = 0;

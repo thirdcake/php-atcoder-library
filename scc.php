@@ -1,5 +1,12 @@
 <?php
-// ## Strongly connected component -- 強連結成分分解
+/**
+ * Strongly Connected Component
+ * 
+ * 強連結成分分解、ある点どうしが行き来できる連結成分ごとに分解する
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class Scc {
     public int $size = -1;
     private int $n;

@@ -1,5 +1,12 @@
 <?php
-// ## Fenwick Tree
+/**
+ * Fenwick Tree もしくは Binary Index Tree(BIT)
+ * 
+ * 1点更新と、区間和を求める
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class Fenwick {
     public array $tree;
     public int $size;

@@ -1,5 +1,13 @@
 <?php
-// ## union find
+/**
+ * union find tree / dsu
+ * 
+ * 同一グループ内にあるかどうかを超高速判定
+ * 最小全域木
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class UnionFind {
     public array $parents;
     public array $size;

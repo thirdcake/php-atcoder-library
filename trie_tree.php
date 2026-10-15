@@ -1,5 +1,12 @@
 <?php
-// ## trie tree
+/**
+ * trie tree
+ * 
+ * トライ木、文字列が何文字目まで同じか
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class Node {
     public array $children = [];
     public bool $isEnd = false;
@@ -47,3 +54,4 @@ $trie->insert('apple');
 var_dump($trie->prefix('app'));
 var_dump($trie->contains('app'));
 var_dump($trie->contains('apple'));
+

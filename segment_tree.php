@@ -1,5 +1,13 @@
 <?php
-// ## segment tree
+/**
+ * segment tree
+ * 
+ * セグメント木、1点更新、区間問い合わせ
+ * 問い合わせ可能なのはモノイド
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 class SegmentTree {
     public array $tree;
     public int $n;

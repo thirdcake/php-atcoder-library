@@ -1,5 +1,12 @@
 <?php
-// ## lower_bound(ソート済みのときのみ利用可)
+/**
+ * lower bound
+ * 
+ * ソート済みの配列で、ある値以上の最初の要素のインデックス
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function lower_bound(array $arr, int $val):int {
     $ng = -1;
     $ok = count($arr);
@@ -15,7 +22,14 @@ function lower_bound(array $arr, int $val):int {
     return $ok;
 }
 
-// ## upper_bound(ソート済みのときのみ利用可)
+/**
+ * upper bound
+ * 
+ * ソート済みの配列で、ある値より大きい最初の要素のインデックス
+ * 
+ * @link https://github.com/thirdcake/php-atcoder-library
+ * @license CC0-1.0
+ */
 function upper_bound(array $arr, int $val):int {
     $ng = -1;
     $ok = count($arr);
