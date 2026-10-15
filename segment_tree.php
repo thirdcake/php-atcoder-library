@@ -2,8 +2,8 @@
 /**
  * segment tree
  * 
- * セグメント木、1点更新、区間問い合わせ
- * 問い合わせ可能なのはモノイド
+ * セグメント木。1点更新、区間問い合わせ
+ * のせられる関数はモノイド
  * 
  * @link https://github.com/thirdcake/php-atcoder-library
  * @license CC0-1.0
